@@ -67,7 +67,7 @@ if uploaded_file is not None:
     }
 
     payload = {
-        "model": "mistralai/Mixtral-8x7B-Instruct-v0.1",
+        "model": "Qwen/Qwen2.5-7B-Instruct-Turbo",
         "messages": [{"role": "user", "content": f"Corrige la ortografía y la gramática del siguiente texto:\n\n{processed_text}"}],
         "max_tokens": 20512,
         "temperature": 0.7,
