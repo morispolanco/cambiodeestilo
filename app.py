@@ -18,16 +18,22 @@ def main():
         st.write("Texto original:")
         st.text_area("", text, height=200)
         
+        # Preguntar al usuario a qué estilo quiere cambiar el texto
+        desired_style = st.text_input("¿A qué estilo quieres cambiar el texto?")
+        
         # Procesar el texto usando la API de Together
         if st.button("Cambiar estilo"):
-            modified_text = change_style_with_together_api(text)
-            if modified_text:
-                st.write("Texto modificado:")
-                st.text_area("", modified_text, height=200)
+            if desired_style:
+                modified_text = change_style_with_together_api(text, desired_style)
+                if modified_text:
+                    st.write("Texto modificado:")
+                    st.text_area("", modified_text, height=200)
+                else:
+                    st.error("No se pudo modificar el texto.")
             else:
-                st.error("No se pudo modificar el texto.")
-
-def change_style_with_together_api(text):
+                st.warning("Por favor, especifica a qué estilo quieres cambiar el texto.")
+    
+def change_style_with_together_api(text, desired_style):
     api_key = st.secrets["together_api_key"]
     url = "https://api.together.xyz/v1/chat/completions"
     headers = {
@@ -37,7 +43,7 @@ def change_style_with_together_api(text):
     data = {
         "model": "mistralai/Mixtral-8x7B-Instruct-v0.1",
         "messages": [
-            {"role": "user", "content": f"Cambia el estilo del siguiente texto:\n\n{text}"}
+            {"role": "user", "content": f"Cambia el estilo del siguiente texto al estilo '{desired_style}':\n\n{text}"}
         ],
         "max_tokens": 2512,
         "temperature": 0.7,
