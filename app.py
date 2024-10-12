@@ -8,7 +8,7 @@ import time
 st.title("Corrector de Ortografía y Gramática")
 
 # Leer la clave de API desde los secrets de Streamlit
-API_KEY = st.secrets["together_api_key"]
+API_KEY = st.secrets["openrouter_api_key"]
 
 # Widget para subir el archivo
 uploaded_file = st.file_uploader("Sube un documento de Word", type=["docx"])
@@ -62,7 +62,7 @@ if uploaded_file is not None:
         progress_bar = st.progress(0)
         progress_text = st.empty()
 
-        # Preparar la solicitud a la API enfocada en corrección sin alterar el estilo
+        # Preparar la solicitud a la API de OpenRouter
         headers = {
             "Authorization": f"Bearer {API_KEY}",
             "Content-Type": "application/json"
@@ -77,21 +77,14 @@ Texto a corregir:
 """
 
         payload = {
-            "model": "Qwen/Qwen2.5-7B-Instruct-Turbo",
-            "messages": [{"role": "user", "content": prompt}],
-            "max_tokens": 20512,
-            "temperature": 0.3,  # Reducir la temperatura para respuestas más conservadoras
-            "top_p": 0.9,
-            "top_k": 50,
-            "repetition_penalty": 1.2,
-            "stop": ["<|eot_id|>"],
-            "stream": False
+            "model": "qwen/qwen-2.5-72b-instruct",
+            "messages": [{"role": "user", "content": prompt}]
         }
 
-        # Enviar la solicitud a la API de Together
+        # Enviar la solicitud a la API de OpenRouter
         try:
             with st.spinner('Corrigiendo el documento...'):
-                response = requests.post("https://api.together.xyz/v1/chat/completions", headers=headers, json=payload, timeout=300)
+                response = requests.post("https://openrouter.ai/api/v1/chat/completions", headers=headers, json=payload, timeout=300)
                 # Simular progreso mientras se procesa la solicitud
                 for percent_complete in range(100):
                     time.sleep(0.05)  # Ajusta el tiempo según sea necesario
