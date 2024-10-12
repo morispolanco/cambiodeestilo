@@ -24,7 +24,7 @@ if uploaded_file is not None:
         text = '\n'.join(full_text)
 
         # Dividir párrafos muy largos
-        max_paragraph_length = 500  # Puedes ajustar este valor según tus necesidades
+        max_paragraph_length = 1000  # Puedes ajustar este valor según tus necesidades
         paragraphs = []
 
         def split_into_sentences(text):
