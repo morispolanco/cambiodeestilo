@@ -5,7 +5,7 @@ from io import BytesIO
 import re
 import time
 
-st.title("Corrector Avanzado de Ortografía, Gramática y Estilo")
+st.title("Corrector de Ortografía y Gramática")
 
 # Leer la clave de API desde los secrets de Streamlit
 API_KEY = st.secrets["together_api_key"]
@@ -62,25 +62,25 @@ if uploaded_file is not None:
         progress_bar = st.progress(0)
         progress_text = st.empty()
 
-        # Preparar la solicitud a la API con instrucciones más estrictas
+        # Preparar la solicitud a la API enfocada en corrección sin alterar el estilo
         headers = {
             "Authorization": f"Bearer {API_KEY}",
             "Content-Type": "application/json"
         }
 
         prompt = f"""
-        Realiza una corrección exhaustiva de ortografía y gramática del siguiente texto. Además, mejora el estilo de escritura para que sea más claro y conciso, sin alterar el significado original. Asegúrate de que el texto final cumpla con las normas académicas y profesionales.
+Corrige los errores de ortografía y gramática del siguiente texto, pero no cambies el estilo, la redacción ni la estructura original. Mantén el significado y la forma del texto tal como están.
 
-        Texto a corregir:
+Texto a corregir:
 
-        {processed_text}
-        """
+{processed_text}
+"""
 
         payload = {
             "model": "Qwen/Qwen2.5-7B-Instruct-Turbo",
             "messages": [{"role": "user", "content": prompt}],
             "max_tokens": 20512,
-            "temperature": 0.5,
+            "temperature": 0.3,  # Reducir la temperatura para respuestas más conservadoras
             "top_p": 0.9,
             "top_k": 50,
             "repetition_penalty": 1.2,
