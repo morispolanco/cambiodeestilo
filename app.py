@@ -31,7 +31,7 @@ if uploaded_file is not None:
     payload = {
         "model": "mistralai/Mixtral-8x7B-Instruct-v0.1",
         "messages": [{"role": "user", "content": f"Corrige la ortografía y la gramática del siguiente texto:\n\n{text}"}],
-        "max_tokens": 2512,
+        "max_tokens": 8512,
         "temperature": 0.7,
         "top_p": 0.7,
         "top_k": 50,
