@@ -45,7 +45,7 @@ def change_style_with_together_api(text, desired_style):
         "messages": [
             {"role": "user", "content": f"Cambia el estilo del siguiente texto al estilo '{desired_style}':\n\n{text}"}
         ],
-        "max_tokens": 2512,
+        "max_tokens": 9512,
         "temperature": 0.7,
         "top_p": 0.7,
         "top_k": 50,
