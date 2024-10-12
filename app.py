@@ -24,10 +24,30 @@ def main():
         # Procesar el texto usando la API de Together
         if st.button("Cambiar estilo"):
             if desired_style:
-                modified_text = change_style_with_together_api(text, desired_style)
+                # Mostrar barra de progreso
+                with st.spinner("Procesando..."):
+                    modified_text = change_style_with_together_api(text, desired_style)
                 if modified_text:
                     st.write("Texto modificado:")
                     st.text_area("", modified_text, height=200)
+                    
+                    # Crear un nuevo documento Word con el texto modificado
+                    modified_doc = docx.Document()
+                    for paragraph in modified_text.split('\n'):
+                        modified_doc.add_paragraph(paragraph)
+                    
+                    # Guardar el documento en un objeto BytesIO
+                    docx_stream = BytesIO()
+                    modified_doc.save(docx_stream)
+                    docx_stream.seek(0)
+                    
+                    # Botón para descargar el documento modificado
+                    st.download_button(
+                        label="Descargar documento modificado",
+                        data=docx_stream,
+                        file_name="documento_modificado.docx",
+                        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    )
                 else:
                     st.error("No se pudo modificar el texto.")
             else:
@@ -45,7 +65,7 @@ def change_style_with_together_api(text, desired_style):
         "messages": [
             {"role": "user", "content": f"Cambia el estilo del siguiente texto al estilo '{desired_style}':\n\n{text}"}
         ],
-        "max_tokens": 9512,
+        "max_tokens": 2512,
         "temperature": 0.7,
         "top_p": 0.7,
         "top_k": 50,
@@ -54,7 +74,11 @@ def change_style_with_together_api(text, desired_style):
         "stream": False
     }
     
-    response = requests.post(url, headers=headers, json=data)
+    try:
+        response = requests.post(url, headers=headers, json=data)
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error de red: {e}")
+        return ""
     
     if response.status_code == 200:
         result = response.json()
