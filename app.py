@@ -24,7 +24,7 @@ if uploaded_file is not None:
         text = '\n'.join(full_text)
 
         # Dividir párrafos muy largos
-        max_paragraph_length = 500  # Puedes ajustar este valor según tus necesidades
+        max_paragraph_length = 800  # Puedes ajustar este valor según tus necesidades
         paragraphs = []
 
         def split_into_sentences(text):
@@ -69,7 +69,7 @@ if uploaded_file is not None:
         }
 
         prompt = f"""
-Corrige los errores de ortografía y gramática del siguiente texto, eliminando repeticiones innecesarias. Si durante la corrección se suprime una llamada a nota al pie, coloca un "+" en su lugar. No cambies el estilo, la redacción ni la estructura original. Mantén el significado y la forma del texto tal como están.
+Corrige los errores de ortografía y gramática del siguiente texto. Si durante la corrección se suprime una llamada a nota al pie, coloca un "+" en su lugar. No cambies el estilo, la redacción ni la estructura original. Mantén el significado y la forma del texto tal como están.
 
 Texto a corregir:
 
