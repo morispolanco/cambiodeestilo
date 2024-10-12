@@ -61,7 +61,7 @@ def correct_text_with_together_api(paragraphs):
         data = {
             "model": "mistralai/Mixtral-8x7B-Instruct-v0.1",
             "messages": [
-                {"role": "user", "content": f"Corrige el siguiente texto:\n\n{paragraph}"}
+                {"role": "user", "content": f"Corrige el siguiente texto sin añadir explicaciones ni comentarios, solo devuelve el texto corregido:\n\n{paragraph}"}
             ],
             "max_tokens": 2512,
             "temperature": 0.7,
